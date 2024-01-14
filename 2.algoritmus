@@ -1,0 +1,369 @@
+import random
+import math
+Ctverce=[
+[[0], [0], [0], [0], [4575], [7479], [3589], [0], [0], [3559], [28176], [0], [0], [0]],
+[[0], [0], [0], [11102], [40922], [127726], [5463], [11174], [44070], [32425], [61892], [78108], [4365], [0]],
+[[0], [0], [11424], [47895], [52532], [34839], [37545], [56697], [36038], [482252], [56662], [158870], [52209], [0]],
+[[0], [22181], [57740], [29825], [50561], [50116], [39966], [85188], [39919], [35204], [159242], [62515], [121769], [103676]],
+[[0], [53446], [215459], [38515], [65426], [77452], [48216], [57358], [136350], [66900], [94153], [32039], [116026], [508905]],
+[[85854], [130157], [28711], [26611], [1453963], [98924], [80386], [224603], [59393], [21692], [16503], [35007], [0], [0]],
+[[6614], [11143], [101931], [158158], [71857], [85658], [74354], [49441], [113078], [0], [3799], [0], [0], [0]],
+[[0], [0], [0], [92811], [170777], [117268], [210187], [21031], [5427], [0], [0], [0], [0], [0]]
+]
+
+Zastavky=[
+[[0], [0], [0], [0], [1, 5], [1, 6], [1, 7], [0], [0], [1, 10], [1, 11], [0], [0], [0]],
+[[0], [0], [0], [2, 4], [2, 5], [2, 6], [2, 7], [2, 8], [2, 9], [2, 10], [2, 11], [2, 12], [2, 13], [0]],
+[[0], [0], [3, 3], [3, 4], [3, 5], [3, 6], [3, 7], [3, 8], [3, 9], [3, 10], [3, 11], [3, 12], [3, 13], [0]],
+[[0], [4, 2], [4, 3], [4, 4], [4, 5], [4, 6], [4, 7], [4, 8], [4, 9], [4, 10], [4, 11], [4, 12], [4, 13], [4, 14]],
+[[0], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6], [5, 7], [5, 8], [5, 9], [5, 10], [5, 11], [5, 12], [5, 13], [5, 14]],
+[[6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6], [6, 7], [6, 8], [6, 9], [6, 10], [6, 11], [6, 12], [0], [0]],
+[[7, 1], [7, 2], [7, 3], [7, 4], [7, 5], [7, 6], [7, 7], [7, 8], [7, 9], [0], [7, 11], [0], [0], [0]],
+[[0], [0], [0], [8, 4], [8, 5], [8, 6], [8, 7], [8, 8], [8, 9], [0], [0], [0], [0], [0]]
+]
+
+Spojene_drahy=[
+[[6,5],[6,6]],
+[[6,7],[6,8]],
+[[5,9],[5,10]],
+[[5,11],[5,12]],
+[[5,6],[5,7]],
+[[3,10],[4,10]],
+[[5, 13], [5, 14]],
+[[5, 3], [5, 4]],
+[[4, 10], [5, 10]]
+]
+
+me_stanice=[[6,5],[6,6],[6,7],[6,8],[5,9],[5,10],[5,11],[5,12],[5,6],[5,7],[3,10],[4,10],[5, 13], [5, 14],[5, 3], [5, 4],[4, 10], [5, 10]]
+
+vsechny_trasy=[
+    [[6,5],[6,6],0.1],[[6,7],[6,8],0.1],[[5,9],[5,10],0.1],[[5,11],[5,12],0.1],[[5,6],[5,7],0.1],[[3,10],[4,10],0.1],[[5, 13], [5, 14],0.1],[[5, 3], [5, 4],0.1],[[4, 10], [5, 10],0.1]
+    ]
+
+
+cesta_mezi=[]
+pocet_drah=0
+for i in Spojene_drahy:
+    pocet_drah+=1
+
+prestupy=[]
+hledana_draha=0
+for i in Spojene_drahy:
+    hledana_draha+=1
+    for k in range(pocet_drah-hledana_draha):
+        nejblizsi=1000000
+        for j in i:
+            resena_cesta=Spojene_drahy[hledana_draha+k]
+            for l in resena_cesta:
+                a= math.sqrt((j[0]-l[0])**2 + (j[1]-l[1])**2)
+                if a<nejblizsi:
+                            nejblizsi=a
+                            stanice_prestupu=[j,l]
+        prestupy.append(stanice_prestupu)
+
+
+for i in prestupy:
+    a=i[0]
+    b=i[1]
+    a= math.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
+    a=a/3
+    i.append(a)
+    cesta_mezi.append(i)
+print(vsechny_trasy)
+
+
+nahodni_lide=[]
+nahodne_mista=[]
+
+pocet_testovanych_lidi=500
+
+for i in range(pocet_testovanych_lidi):
+    nahodni_lide.append(random.randint(0,7415073 ))
+    
+
+
+sloup=0
+rad=0
+poradi=-1
+for clovek in nahodni_lide:
+    poradi+=1
+    je=0
+    for i in Ctverce:
+        rad+=1
+        sloup=0
+        for j in i:
+            sloup+=1
+            clovek=clovek-j[0]
+            if clovek<0 and je==0:
+                je=1
+                clovekovo_miso=[rad,sloup]
+    nahodni_lide[poradi]=clovekovo_miso
+    rad=0
+    sloup=0
+
+
+
+sloup=0
+rad=0
+poradi=-1
+for i in range(pocet_testovanych_lidi):
+    hotovo=0
+    while hotovo==0:
+        clovek=(random.randint(0,7415073 ))
+        poradi+=1
+        je=0
+        for i in Ctverce:
+            rad+=1
+            sloup=0
+            for j in i:
+                sloup+=1
+                clovek=clovek-j[0]
+                if clovek<0 and je==0:
+                    je=1
+                    clovekovo_miso=[rad,sloup]
+        if not clovekovo_miso==nahodni_lide[poradi]:
+            hotovo=1
+            nahodne_mista.append(clovekovo_miso)
+        else:
+            poradi=poradi-1
+        rad=0
+        sloup=0
+
+
+soucet=1000000000000
+stanice=[0,0]
+prvniindex=0
+for i in Zastavky:
+    prvniindex+=1
+    index=0
+    for zacatek in i:
+        index+=1
+        if zacatek[0]<9:
+            if not zacatek==[0]:
+                if not zacatek[1]==14:
+                    konec=i[index]
+                    print(zacatek,konec)
+                    if not konec==[0]:  
+                        drahovi=0
+                        prestupni_trasa=[] 
+                        pospojovano=0
+                        for kk in me_stanice:
+                            if zacatek==kk or konec==kk:
+                                pospojovano=1
+                        if pospojovano==0:
+                            pripojeni=1000000
+                            for iil in me_stanice:
+                                aa= math.sqrt((iil[0]-zacatek[0])**2 + (iil[1]-zacatek[1])**2)
+                                if aa<pripojeni:
+                                    pripojeni=aa
+                                    aa=aa/3
+                                    prestupni_trasa=[iil,zacatek,aa]
+                                aa= math.sqrt((iil[0]-konec[0])**2 + (iil[1]-konec[1])**2)
+                                if aa<pripojeni:
+                                    pripojeni=aa
+                                    aa=aa/3
+                                    prestupni_trasa=[iil,zacatek,aa]
+
+
+                        delka_cesty=(math.sqrt((konec[0]-zacatek[0])**2 + (konec[1]-zacatek[1])**2)/10)
+                        teoreticke_drahy=[[[6,5],[6,6],0.1],[[6,7],[6,8],0.1],[[5,9],[5,10],0.1],[[5,11],[5,12],0.1],[[5,6],[5,7],0.1],[[3,10],[4,10],0.1],[[5, 13], [5, 14],0.1],[[5, 3], [5, 4],0.1],[[4, 10], [5, 10],0.1]]
+                        for dod in cesta_mezi:
+                            teoreticke_drahy.append(dod)
+                        teoreticke_drahy.append([zacatek,konec,delka_cesty])
+                        if not prestupni_trasa==[]:
+                            teoreticke_drahy.append(prestupni_trasa)
+                        poradi_cloveka=-1
+                        soucet_pripad=0
+                        for clovek in nahodni_lide:
+                            poradi_cloveka+=1
+                            nejmensi_cesta_cloveka=100000
+                            nejmensi_cesta_na_zastavku=100000
+                            draha_na_zastavku1=0
+                            draha_na_zastavku2=0
+                            teoreticke_zatavky=[[6,5],[6,6],[6,7],[6,8],[5,9],[5,10],[5,11],[5,12],[5,6],[5,7],[3,10],[4,10],[5, 13], [5, 14],[5, 3], [5, 4],[4, 10], [5, 10]]
+                            teoreticke_zatavky.append(zacatek)
+                            teoreticke_zatavky.append(konec)
+                            for teoreticka_nejblizsi in teoreticke_zatavky:
+                                a= math.sqrt((clovek[0]-teoreticka_nejblizsi[0])**2 + (clovek[1]-teoreticka_nejblizsi[1])**2)
+                                draha=a/3
+                                if a<nejmensi_cesta_cloveka:
+                                    nejmensi_cesta_cloveka=a
+                                    clovek_zastavka=teoreticka_nejblizsi
+                                    draha_na_zastavku1=draha
+                                cil=nahodne_mista[poradi_cloveka]
+                                b= math.sqrt((cil[0]-teoreticka_nejblizsi[0])**2 + (cil[1]-teoreticka_nejblizsi[1])**2)
+                                draha=b/3
+                                if b<nejmensi_cesta_na_zastavku:
+                                    nejmensi_cesta_na_zastavku=b
+                                    cil_zastavka=teoreticka_nejblizsi
+                                    draha_na_zastavku2=draha
+                            pesky=math.sqrt((clovek[0]-cil[0])**2 + (clovek[1]-cil[1])**2)
+                            pesky=pesky/3
+                                   
+
+                            vzdalenost_do_bodu=[[6,5],[6,6],[6,7],[6,8],[5,9],[5,10],[5,11],[5,12],[5,6],[5,7],[3,10],[4,10],[5, 13], [5, 14],[5, 3], [5, 4],[4, 10], [5, 10]]
+                            vzdalenost_do_bodu.append(zacatek)
+                            vzdalenost_do_bodu.append(konec)
+                            souradnice=-1
+                            for ia in vzdalenost_do_bodu:
+                                souradnice+=1
+                                if ia==clovek_zastavka:
+                                    vzdalenost_do_bodu[souradnice]=[ia,0]
+                                else:
+                                    vzdalenost_do_bodu[souradnice]=[ia,10000000]
+                            urcite_dodelano=0
+                            while urcite_dodelano<40:
+                                cislo=0
+                                urcite_dodelano+=1
+                                for iaa in teoreticke_drahy:
+                                    stanice0=iaa[0]
+                                    stanice1=iaa[1]
+                                    for kontrola in vzdalenost_do_bodu:
+                                        if stanice0==kontrola[0]:
+                                            po_tet_ceste=kontrola[1]+iaa[2]
+                                            cislo=-1
+                                            mozna_staci_prepsat=0
+                                            
+                                            for alternativa in range(20):
+                                                neni_kratsi=vzdalenost_do_bodu[alternativa]
+                                                cislo+=1
+                                                if neni_kratsi[0]==stanice1:
+                                                    mozna_staci_prepsat=1
+                                                    if po_tet_ceste<neni_kratsi[1]:
+                                                        vzdalenost_do_bodu[cislo]=[stanice1,po_tet_ceste]                                     
+                                        if stanice1==kontrola[0]:
+                                            po_tet_ceste=kontrola[1]+iaa[2]
+                                            cislo=-1
+                                            mozna_staci_prepsat=0
+                                            for neni_krati in vzdalenost_do_bodu:
+                                                cislo+=1
+                                                if neni_krati[0]==stanice0:
+                                                    if po_tet_ceste<neni_krati[1]:
+                                                        vzdalenost_do_bodu[cislo]=[stanice0,po_tet_ceste]
+                            drahovi=drahovi + draha_na_zastavku1 + draha_na_zastavku2
+                            for jk in vzdalenost_do_bodu:
+                                if jk[0]==cil_zastavka:
+                                    if (jk[1]+draha_na_zastavku1+draha_na_zastavku2)<pesky:
+                                        soucet_pripad= soucet_pripad + draha_na_zastavku1 + draha_na_zastavku2 + jk[1]
+                                    else:
+                                        soucet_pripad = soucet_pripad + pesky            
+                        if  soucet_pripad<soucet:
+                            soucet=soucet_pripad
+                            stanice=[zacatek,konec]
+                
+                
+                
+                
+                
+                if not prvniindex==8:
+                    radekkk=Zastavky[prvniindex]
+                    konec=radekkk[index-1]
+                    print(zacatek,konec)
+                    if not konec==[0]:
+                        drahovi=0
+                        prestupni_trasa=[] 
+                        pospojovano=0
+                        for kk in me_stanice:
+                            if zacatek==kk or konec==kk:
+                                pospojovano=1
+                        if pospojovano==0:
+                            pripojeni=1000000
+                            for iil in me_stanice:
+                                aa= math.sqrt((iil[0]-zacatek[0])**2 + (iil[1]-zacatek[1])**2)
+                                if aa<pripojeni:
+                                    pripojeni=aa
+                                    aa=aa/3
+                                    prestupni_trasa=[iil,zacatek,aa]
+                                aa= math.sqrt((iil[0]-konec[0])**2 + (iil[1]-konec[1])**2)
+                                if aa<pripojeni:
+                                    pripojeni=aa
+                                    aa=aa/3
+                                    prestupni_trasa=[iil,zacatek,aa]
+
+
+                        delka_cesty=(math.sqrt((konec[0]-zacatek[0])**2 + (konec[1]-zacatek[1])**2)/10)
+                        teoreticke_drahy=[[[6,5],[6,6],0.1],[[6,7],[6,8],0.1],[[5,9],[5,10],0.1],[[5,11],[5,12],0.1],[[5,6],[5,7],0.1],[[3,10],[4,10],0.1],[[5, 13], [5, 14],0.1],[[5, 3], [5, 4],0.1],[[4, 10], [5, 10],0.1]]
+                        for dod in cesta_mezi:
+                            teoreticke_drahy.append(dod)
+                        teoreticke_drahy.append([zacatek,konec,delka_cesty])
+                        if not prestupni_trasa==[]:
+                            teoreticke_drahy.append(prestupni_trasa)
+                        poradi_cloveka=-1
+                        soucet_pripad=0
+                        for clovek in nahodni_lide:
+                            poradi_cloveka+=1
+                            nejmensi_cesta_cloveka=100000
+                            nejmensi_cesta_na_zastavku=100000
+                            draha_na_zastavku1=0
+                            draha_na_zastavku2=0
+                            teoreticke_zatavky=[[6,5],[6,6],[6,7],[6,8],[5,9],[5,10],[5,11],[5,12],[5,6],[5,7],[3,10],[4,10],[5, 13], [5, 14],[5, 3], [5, 4],[4, 10], [5, 10]]
+                            teoreticke_zatavky.append(zacatek)
+                            teoreticke_zatavky.append(konec)
+                            for teoreticka_nejblizsi in teoreticke_zatavky:
+                                a= math.sqrt((clovek[0]-teoreticka_nejblizsi[0])**2 + (clovek[1]-teoreticka_nejblizsi[1])**2)
+                                draha=a/3
+                                if a<nejmensi_cesta_cloveka:
+                                    nejmensi_cesta_cloveka=a
+                                    clovek_zastavka=teoreticka_nejblizsi
+                                    draha_na_zastavku1=draha
+                                cil=nahodne_mista[poradi_cloveka]
+                                b= math.sqrt((cil[0]-teoreticka_nejblizsi[0])**2 + (cil[1]-teoreticka_nejblizsi[1])**2)
+                                draha=b/3
+                                if b<nejmensi_cesta_na_zastavku:
+                                    nejmensi_cesta_na_zastavku=b
+                                    cil_zastavka=teoreticka_nejblizsi
+                                    draha_na_zastavku2=draha
+                            pesky=math.sqrt((clovek[0]-cil[0])**2 + (clovek[1]-cil[1])**2)
+                            pesky=pesky/3
+                                   
+
+                            vzdalenost_do_bodu=[[6,5],[6,6],[6,7],[6,8],[5,9],[5,10],[5,11],[5,12],[5,6],[5,7],[3,10],[4,10],[5, 13], [5, 14],[5, 3], [5, 4],[4, 10], [5, 10]]
+                            vzdalenost_do_bodu.append(zacatek)
+                            vzdalenost_do_bodu.append(konec)
+                            souradnice=-1
+                            for ia in vzdalenost_do_bodu:
+                                souradnice+=1
+                                if ia==clovek_zastavka:
+                                    vzdalenost_do_bodu[souradnice]=[ia,0]
+                                else:
+                                    vzdalenost_do_bodu[souradnice]=[ia,10000000]
+                            urcite_dodelano=0
+                            while urcite_dodelano<40:
+                                cislo=0
+                                urcite_dodelano+=1
+                                for iaa in teoreticke_drahy:
+                                    stanice0=iaa[0]
+                                    stanice1=iaa[1]
+                                    for kontrola in vzdalenost_do_bodu:
+                                        if stanice0==kontrola[0]:
+                                            po_tet_ceste=kontrola[1]+iaa[2]
+                                            cislo=-1
+                                            mozna_staci_prepsat=0
+                                            
+                                            for alternativa in range(20):
+                                                neni_kratsi=vzdalenost_do_bodu[alternativa]
+                                                cislo+=1
+                                                if neni_kratsi[0]==stanice1:
+                                                    mozna_staci_prepsat=1
+                                                    if po_tet_ceste<neni_kratsi[1]:
+                                                        vzdalenost_do_bodu[cislo]=[stanice1,po_tet_ceste]                                     
+                                        if stanice1==kontrola[0]:
+                                            po_tet_ceste=kontrola[1]+iaa[2]
+                                            cislo=-1
+                                            mozna_staci_prepsat=0
+                                            for neni_krati in vzdalenost_do_bodu:
+                                                cislo+=1
+                                                if neni_krati[0]==stanice0:
+                                                    if po_tet_ceste<neni_krati[1]:
+                                                        vzdalenost_do_bodu[cislo]=[stanice0,po_tet_ceste]
+                            drahovi=drahovi + draha_na_zastavku1 + draha_na_zastavku2
+                            for jk in vzdalenost_do_bodu:
+                                if jk[0]==cil_zastavka:
+                                    if (jk[1]+draha_na_zastavku1+draha_na_zastavku2)<pesky:
+                                        soucet_pripad= soucet_pripad + draha_na_zastavku1 + draha_na_zastavku2 + jk[1]
+                                    else:
+                                        soucet_pripad = soucet_pripad + pesky            
+                        if  soucet_pripad<soucet:
+                            soucet=soucet_pripad
+                            stanice=[zacatek,konec]
+print(stanice)
